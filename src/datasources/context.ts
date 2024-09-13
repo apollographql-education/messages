@@ -1,7 +1,7 @@
 import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
 import { PrismaClient } from "@prisma/client";
+import { PrismaDbClient } from "./prisma/client"
 
-const prisma = new PrismaClient();
 
 export const createContext = async ({ req }: StandaloneServerContextFunctionArgument) => {
   const token = req.headers.authorization || "";
@@ -9,7 +9,7 @@ export const createContext = async ({ req }: StandaloneServerContextFunctionArgu
   return {
     userId,
     dataSources: {
-      prisma: prisma,
+      db: new PrismaDbClient()
     }
   }
 };
