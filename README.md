@@ -27,3 +27,23 @@ To run this repository, you'll need Node and a terminal. As part of the workshop
 1. Next, launch the project with `npm run dev`!
 
 As we proceed through the workshop, we'll install additional dependencies and walk through how to publish our schema changes to Studio.
+
+### Using Prisma
+
+This repository contains a database built with Prisma.
+
+Run the following command to generate a migration that updates and seeds the database.
+
+```
+npx prisma migrate dev
+```
+
+We can also use **Prisma Studio** to inspect our database on a local port.
+
+```
+npx prisma studio
+```
+
+Then open up [http://localhost:5555](http://localhost:5555). This will allow you to browse the records in your database.
+
+This will start us with four entries in the `User` table, and one entry in the `Conversation` table. By default, no messages have yet been sent in the conversation.

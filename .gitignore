@@ -1,5 +1,6 @@
 # Ignore the compiled output.
 dist/
+dev.db
 
 # TypeScript incremental compilation cache
 *.tsbuildinfo
