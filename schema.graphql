@@ -33,6 +33,13 @@ type Message {
   sentTime: String
 }
 
+input NewMessageInput {
+  # The text content of the message
+  text: String!
+  # The ID of the conversation
+  conversationId: String!
+}
+
 type User @key(fields: "id") {
   id: ID!
 }
