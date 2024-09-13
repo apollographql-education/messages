@@ -1,39 +1,29 @@
-# Apollo Server Typescript Subgraph Template
+# The Messages subgraph
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/WdJd2w?referralCode=xsbY2R)
+Hello and welcome to the `messages` subgraph: this is the starter code for the Summit 2024 workshop, **Realtime data across your graph with federated subscriptions**. We're happy you're here!
 
-This template can be used to quickly create an [Apollo Federation] subgraph with the [@apollo/subgraph] and [@apollo/server] packages. You can use this template from [Rover](https://www.apollographql.com/docs/rover/commands/template/) with `rover template use --template subgraph-typescript-apollo-server`.
+## What's `messages` all about?
 
-## What's Included
+In this workshop, we'll bring realtime data capabilities into our `messages` subgraph server.
 
-- A basic, [Apollo Federation] subgraph with simple examples for queries, entities, and mutations. You can run this subgraph with `npm start`.
-- [nodemon] is setup for `npm run dev` for a hot-reloading development environment.
-- Example tests in the `src/__tests__` directory. You can run these tests with `npm run test`.
-- GitHub Actions workflows which will:
-  - Run `npm run test` on every push.
-  - Check the schema against Apollo Studio on every push.
-  - Publish the subgraph to Apollo Studio on every push to the `main` branch.
-- [GraphQL Code Generator] pre-configured as a `build` step.
+`messages` is one of three subgraphs we'll investigate as part of building our workshop project, Airlock. Airlock is an intergalactic travel booking app that lets you view listings, make bookings, and (coming up shortly!) chat with hosts and ask questions.
 
-## Next Steps
+In our time together, we will:
 
-- Setup project with `npm install`
-  - This will also run the `postinstall` script which will run `codegen` and compile the project
-- Download [Rover] and start it using the command printed out from `cargo run` to start a local version of Apollo Explorer.
-- Replace "name" in `package.json` with the name of your subgraph.
-- Start filling in your own schema in `schema.graphql`.
-- Start filling in your own types and resolvers in `src/resolvers`.
-- Set these secrets in GitHub Actions to enable all checks:
-  - `APOLLO_KEY`: An Apollo Studio API key for the supergraph to enable schema checks and publishing of the subgraph.
-  - `APOLLO_GRAPH_REF`: The name of the supergraph in Apollo Studio.
-  - `PRODUCTION_URL`: The URL of the deployed subgraph that the supergraph gateway will route to.
-- Remove the if: false lines from .github/workflows/checks.yaml and .github/workflows/deploy.yaml to enable schema checks and publishing.
-- Write your custom deploy logic in `.github/workflows/deploy.yaml`.
-- Send the Router-Authorization header [from your Cloud router](https://www.apollographql.com/docs/graphos/routing/cloud-configuration#managing-secrets) and set the ROUTER_SECRET environment variable wherever you deploy this to.
+- Set up federated subscriptions, using the router and HTTP callbacks
+- Configure the `Subscription` type, and define its resolver
+- Utilize the `PubSub` class to both _publish_ and _subscribe_ to particular events
+- Tackle a whole lot of optimizations for subscribing to data _across_ our graph!
 
-[apollo federation]: https://www.apollographql.com/docs/federation/
-[@apollo/server]: https://www.apollographql.com/docs/apollo-server/
-[@apollo/subgraph]: https://www.apollographql.com/docs/federation/subgraphs
-[rover]: https://www.apollographql.com/docs/rover/
-[nodemon]: https://www.npmjs.com/package/nodemon
-[GraphQL Code Generator]: https://www.the-guild.dev/graphql/codegen
+So, let's get going!
+
+## Prerequisites
+
+To run this repository, you'll need Node and a terminal. As part of the workshop prereqs, you should already have [Rover](https://www.apollographql.com/docs/rover/) downloaded, along with the Router binary. (You'll also have created a graph in Studio, and published this and the other subgraph schemas!)
+
+## Get started
+
+1. First, set up the project by installing dependencies with `npm install`.
+1. Next, launch the project with `npm run dev`!
+
+As we proceed through the workshop, we'll install additional dependencies and walk through how to publish our schema changes to Studio.
