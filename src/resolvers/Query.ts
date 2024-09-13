@@ -2,7 +2,7 @@ import { Resolvers } from "../__generated__/resolvers-types";
 
 export const Query: Resolvers = {
   Query: {
-    thing(_parent, { id }, _context) {
+    conversation(_, { id }, {prisma}) {
       return { id: id.toString(), name: "Name" };
     },
   },
