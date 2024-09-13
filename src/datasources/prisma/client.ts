@@ -1,7 +1,7 @@
 // A collection of Prisma-focused operations, extracted to keep our resolvers thin!
 
 import { PrismaClient, Prisma } from "@prisma/client";
-import { AuthenticationError } from "../../utils/errors"
+import { AuthenticationError, NotFoundError } from "../../utils/errors"
 
 
 
@@ -33,10 +33,18 @@ export class PrismaDbClient {
       })
 
       // find conversation that has recipient as participant
-      const [{conversation: matchedConversation}] = conversationsArray.filter(({ conversation }) => {
+      const matchedConversationArray = conversationsArray.filter(({ conversation }) => {
         // Only return the conversation that contains the recipient's ID
         return conversation.participants.find(participant => participant.participantId === recipientId)
       })
+  
+
+      if (!matchedConversationArray.length) {
+        throw NotFoundError();
+      }
+
+      const [{ conversation: matchedConversation}] = matchedConversationArray;
+
   
       // Now fetch additional details about this conversation using the ID we found
       const { id: conversationId, openedTime, ...conversationAttributes } = await this.prisma.conversation.findUnique({
@@ -55,7 +63,7 @@ export class PrismaDbClient {
     } catch (e) {
       // If conversation lookup fails, throw error
       console.log(e)
-      throw Error("Conversation not found")
+      throw Error(e.message)
     }
   }
   
@@ -81,9 +89,10 @@ export class PrismaDbClient {
           ...conversationAttributes
         }
       }) : []
+
     } catch (e) {
       console.log(e)
-      throw Error("No conversations found")
+      throw Error(e.message)
     }
   }
 
@@ -112,7 +121,7 @@ export class PrismaDbClient {
 
         // User could not be found
         if (!user) {
-          throw Error("Please provide a valid token")
+          throw NotFoundError()
         }
 
         const { conversation: conversationsArray } = user;

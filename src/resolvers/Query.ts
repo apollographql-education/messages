@@ -1,4 +1,3 @@
-import { AuthenticationError } from "../utils/errors";
 import { Resolvers } from "../__generated__/resolvers-types";
 
 export const Query: Resolvers = {
