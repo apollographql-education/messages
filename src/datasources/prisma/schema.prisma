@@ -22,7 +22,7 @@ model Message {
 
   senderId           Int
   receiverId         Int
-  parentConversation Conversation? @relation(fields: [conversationId], references: [id])
+  parentConversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId     Int?
 }
 
