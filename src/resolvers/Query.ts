@@ -2,8 +2,15 @@ import { Resolvers } from "../__generated__/resolvers-types";
 
 export const Query: Resolvers = {
   Query: {
-    conversation(_, { id }, {prisma}) {
-      return { id: id.toString(), name: "Name" };
-    },
-  },
-};
+    async conversation(_, { id }, {prisma}) {
+      const existingConversation = await prisma.conversation.findUnique({
+        where: {
+          id: parseInt(id)
+        },
+      })
+      return {
+        id: "1"
+      }
+    }
+  }
+}

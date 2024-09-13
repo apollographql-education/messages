@@ -48,8 +48,16 @@ Then open up [http://localhost:5555](http://localhost:5555). This will allow you
 
 This will start us with four entries in the `User` table, and one entry in the `Conversation` table. By default, no messages have yet been sent in the conversation.
 
+### Alternate route of setting up DB
+
 There is also a seed command in `package.json` that you can run to set up the database.
 
 ```
 npm run db:seed
+```
+
+However you will also need to run the `db:generate` command.
+
+```
+npm run db:generate
 ```

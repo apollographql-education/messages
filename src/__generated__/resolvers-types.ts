@@ -10,7 +10,7 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string | number; output: string; }
+  ID: { input: string; output: string; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -18,35 +18,34 @@ export type Scalars = {
   _FieldSet: { input: any; output: any; }
 };
 
-export type CreateThing = {
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
+export type Conversation = {
+  __typename?: 'Conversation';
+  id: Scalars['ID']['output'];
+  messages?: Maybe<Array<Maybe<Message>>>;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  createThing?: Maybe<Thing>;
-};
-
-
-export type MutationCreateThingArgs = {
-  thing: CreateThing;
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID']['output'];
+  sentFrom: User;
+  sentTime?: Maybe<Scalars['String']['output']>;
+  sentTo: User;
+  text: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  thing?: Maybe<Thing>;
+  conversation?: Maybe<Conversation>;
 };
 
 
-export type QueryThingArgs = {
+export type QueryConversationArgs = {
   id: Scalars['ID']['input'];
 };
 
-export type Thing = {
-  __typename?: 'Thing';
+export type User = {
+  __typename?: 'User';
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -132,55 +131,55 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  CreateThing: CreateThing;
+  Conversation: ResolverTypeWrapper<Conversation>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Message: ResolverTypeWrapper<Message>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  Thing: ResolverTypeWrapper<Thing>;
+  User: ResolverTypeWrapper<User>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  CreateThing: CreateThing;
+  Conversation: Conversation;
   ID: Scalars['ID']['output'];
+  Message: Message;
   String: Scalars['String']['output'];
-  Mutation: {};
   Query: {};
-  Thing: Thing;
+  User: User;
   Boolean: Scalars['Boolean']['output'];
 }>;
 
-export type ContactDirectiveArgs = {
-  description?: Maybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
-  url?: Maybe<Scalars['String']['input']>;
-};
+export type ConversationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Conversation'] = ResolversParentTypes['Conversation']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  messages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
-export type ContactDirectiveResolver<Result, Parent, ContextType = DataSourceContext, Args = ContactDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createThing?: Resolver<Maybe<ResolversTypes['Thing']>, ParentType, ContextType, RequireFields<MutationCreateThingArgs, 'thing'>>;
+export type MessageResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  sentFrom?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  sentTime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sentTo?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  thing?: Resolver<Maybe<ResolversTypes['Thing']>, ParentType, ContextType, RequireFields<QueryThingArgs, 'id'>>;
+  conversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<QueryConversationArgs, 'id'>>;
 }>;
 
-export type ThingResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Thing'] = ResolversParentTypes['Thing']> = ResolversObject<{
-  __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['Thing']>, { __typename: 'Thing' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
+export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']>, { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = DataSourceContext> = ResolversObject<{
-  Mutation?: MutationResolvers<ContextType>;
+  Conversation?: ConversationResolvers<ContextType>;
+  Message?: MessageResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  Thing?: ThingResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 
-export type DirectiveResolvers<ContextType = DataSourceContext> = ResolversObject<{
-  contact?: ContactDirectiveResolver<any, any, ContextType>;
-}>;
