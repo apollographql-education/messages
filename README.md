@@ -61,3 +61,42 @@ However you will also need to run the `db:generate` command.
 ```
 npm run db:generate
 ```
+
+### Launching Sandbox
+
+When you run `npm run dev` the server will begin running on port 4001. Open up [http://localhost:4001](http://localhost:4001) to access Sandbox. Sandbox is an environment where we can write and execute GraphQL operations.
+
+If your database is setup correctly, you can run the following query:
+
+```
+query GetConversation {
+  conversation(id: "1") {
+    id
+    createdAt
+    messages {
+      id
+      text
+    }
+  }
+}
+```
+
+And get a response containing the conversation's `id` and `createdAt` time. Though be aware that `messages` (at this point) _should_ be `null`! We'll fix that shortly.
+
+If you run the query with a different conversation `id`, you'll see an error. This is because there is currently just one conversation in our database.
+
+To create a new conversation, we can run a `createConversation` mutation, providing the ID of the person we want to start a chat with (`recipientId`). To run this mutation, we'll need to include an auth header indicating our own ID.
+
+In Sandbox, open up the _Headers_ panel at the bottom of the _Operation_ workspace. Add a new header called "Authorization", and provide a value of "Bearer 1" (or any other ID that currently exists in the database).
+
+```
+"Authorization" "Bearer 1"
+```
+
+> Please note: This is a simulacrum of auth with federated subscriptions - anyone providing the right user ID can access the conversation and its messages. Please refer to more robust examples to bulletproof the authentication in your applications.
+
+If a conversation already exists between the two provided IDs, an error will be thrown.
+
+```
+
+```

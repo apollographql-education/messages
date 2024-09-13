@@ -22,7 +22,7 @@ async function main() {
     schema: buildSubgraphSchema({ typeDefs, resolvers }),
   });
   const { url } = await startStandaloneServer(server, {
-    context: createContext,
+    context: (req) => createContext(req),
     listen: { port: Number.parseInt(port) },
   });
 

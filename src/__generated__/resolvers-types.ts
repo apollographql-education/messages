@@ -20,6 +20,7 @@ export type Scalars = {
 
 export type Conversation = {
   __typename?: 'Conversation';
+  createdAt: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   messages?: Maybe<Array<Maybe<Message>>>;
 };
@@ -33,14 +34,25 @@ export type Message = {
   text: Scalars['String']['output'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  createConversation?: Maybe<Conversation>;
+};
+
+
+export type MutationCreateConversationArgs = {
+  recipientId: Scalars['ID']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   conversation?: Maybe<Conversation>;
+  conversations?: Maybe<Array<Maybe<Conversation>>>;
 };
 
 
 export type QueryConversationArgs = {
-  id: Scalars['ID']['input'];
+  recipientId: Scalars['ID']['input'];
 };
 
 export type User = {
@@ -132,9 +144,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Conversation: ResolverTypeWrapper<Conversation>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Message: ResolverTypeWrapper<Message>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   User: ResolverTypeWrapper<User>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -143,15 +156,17 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Conversation: Conversation;
+  String: Scalars['String']['output'];
   ID: Scalars['ID']['output'];
   Message: Message;
-  String: Scalars['String']['output'];
+  Mutation: {};
   Query: {};
   User: User;
   Boolean: Scalars['Boolean']['output'];
 }>;
 
 export type ConversationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Conversation'] = ResolversParentTypes['Conversation']> = ResolversObject<{
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   messages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -166,8 +181,13 @@ export type MessageResolvers<ContextType = DataSourceContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  createConversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<MutationCreateConversationArgs, 'recipientId'>>;
+}>;
+
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  conversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<QueryConversationArgs, 'id'>>;
+  conversation?: Resolver<Maybe<ResolversTypes['Conversation']>, ParentType, ContextType, RequireFields<QueryConversationArgs, 'recipientId'>>;
+  conversations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Conversation']>>>, ParentType, ContextType>;
 }>;
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
@@ -179,6 +199,7 @@ export type UserResolvers<ContextType = DataSourceContext, ParentType extends Re
 export type Resolvers<ContextType = DataSourceContext> = ResolversObject<{
   Conversation?: ConversationResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
