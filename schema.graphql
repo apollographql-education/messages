@@ -1,42 +1,29 @@
-# @contact isn't being printed to the generated-schema.graphql file
-# See https://github.com/apollographql/federation/issues/1847
-directive @contact(
-  "Contact title of the subgraph owner"
-  name: String!
-  "URL where the subgraph's owner can be reached"
-  url: String
-  "Other relevant notes can be included here; supports markdown links"
-  description: String
-) on SCHEMA
-
 extend schema
-  @contact(
-    name: "Thing Server Team"
-    url: "https://myteam.slack.com/archives/teams-chat-room-url"
-    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
-  )
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.3",
-    import: [
-      "@key", "@extends", "@shareable", "@inaccessible", "@override", "@external", "@provides", "@requires", "@tag",
-      "@composeDirective", "@interfaceObject"
-    ]
-  )
+  @link(url: "https://specs.apollo.dev/federation/v2.8", import: ["@key"])
 
 type Query {
-  thing(id: ID!): Thing
+  # Retrieves a conversation by ID
+  conversation(id: ID!): Conversation
 }
 
-type Mutation {
-  createThing(thing: CreateThing!): Thing
-}
-
-type Thing @key(fields: "id") {
+type Conversation {
   id: ID!
-  name: String
+  # The messages belonging to the conversation
+  messages: [Message]
 }
 
-input CreateThing {
+type Message {
   id: ID!
-  name: String
+  # The text content of the message
+  text: String!
+  # The ID of the user that sent the message
+  sentFrom: User!
+  # The ID of the user the message was sent to
+  sentTo: User!
+  # The timestamp of when the message was sent
+  sentTime: String
+}
+
+type User @key(fields: "id") {
+  id: ID!
 }

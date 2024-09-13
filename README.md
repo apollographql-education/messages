@@ -47,3 +47,9 @@ npx prisma studio
 Then open up [http://localhost:5555](http://localhost:5555). This will allow you to browse the records in your database.
 
 This will start us with four entries in the `User` table, and one entry in the `Conversation` table. By default, no messages have yet been sent in the conversation.
+
+There is also a seed command in `package.json` that you can run to set up the database.
+
+```
+npm run db:seed
+```
