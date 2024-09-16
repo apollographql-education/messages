@@ -8,7 +8,9 @@ const config: CodegenConfig = {
         federation: true,
         useIndexSignature: true,
         contextType: '../types/DataSourceContext#DataSourceContext',
-        
+        mappers: {
+          Message: "../datasources/models#MessageRepresentation"
+        }
       },
       plugins: ["typescript","typescript-resolvers"]
     },

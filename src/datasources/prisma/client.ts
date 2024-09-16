@@ -127,15 +127,20 @@ export class PrismaDbClient {
           participantId: userId
         },
         include: {
-          conversation: true
+          conversation: {
+            include: {
+              messages: true
+            }
+          }
         }
       })
 
       // If there are conversations, map through and return their properties
-      return conversations.length ? conversations.map(({ conversation: { id, openedTime, ...conversationAttributes } }) => {
+      return conversations.length ? conversations.map(({ conversation: { id, openedTime, messages, ...conversationAttributes } }) => {
         return {
           id: id.toString(),
           createdAt: openedTime.toString(),
+          messages,
           ...conversationAttributes
         }
       }) : []

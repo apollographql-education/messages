@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { MessageRepresentation } from '../datasources/models';
 import { DataSourceContext } from '../types/DataSourceContext';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -7,6 +8,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -148,10 +150,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Conversation: ResolverTypeWrapper<Conversation>;
+  Conversation: ResolverTypeWrapper<Omit<Conversation, 'messages'> & { messages?: Maybe<Array<Maybe<ResolversTypes['Message']>>> }>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  Message: ResolverTypeWrapper<Message>;
+  Message: ResolverTypeWrapper<MessageRepresentation>;
   Mutation: ResolverTypeWrapper<{}>;
   NewMessageInput: NewMessageInput;
   Query: ResolverTypeWrapper<{}>;
@@ -161,10 +163,10 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  Conversation: Conversation;
+  Conversation: Omit<Conversation, 'messages'> & { messages?: Maybe<Array<Maybe<ResolversParentTypes['Message']>>> };
   String: Scalars['String']['output'];
   ID: Scalars['ID']['output'];
-  Message: Message;
+  Message: MessageRepresentation;
   Mutation: {};
   NewMessageInput: NewMessageInput;
   Query: {};
