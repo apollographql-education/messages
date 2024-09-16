@@ -39,6 +39,21 @@ Run the following command to generate a migration that updates and seeds the dat
 npx prisma migrate dev
 ```
 
+This will create our SQLite database. Optionally, you can provide a name for this migration. If it completes successfully, you should see the following output:
+
+```
+Running seed command `ts-node src/datasources/prisma/seed.ts` ...
+{
+  captain: { id: 1, name: 'Captain Dallas', role: 'guest' },
+  xenomorph: { id: 2, name: 'Xeno', role: 'host' },
+  ripley: { id: 3, name: 'Ellen Ripley', role: 'guest' },
+  kane: { id: 4, name: 'Gilbert Kane', role: 'guest' },
+  confrontation: { id: 1, openedTime: 2024-10-07:... }
+}
+
+🌱 The seed command has been executed.
+```
+
 We can also use **Prisma Studio** to inspect our database on a local port.
 
 ```
