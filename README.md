@@ -64,7 +64,7 @@ Then open up [http://localhost:5555](http://localhost:5555). This will allow you
 
 This will start us with four entries in the `User` table, and one entry in the `Conversation` table. By default, no messages have yet been sent in the conversation.
 
-### Alternate route of setting up DB
+#### Alternate route of setting up DB
 
 There is also a seed command in `package.json` that you can run to set up the database.
 
@@ -112,7 +112,3 @@ In Sandbox, open up the _Headers_ panel at the bottom of the _Operation_ workspa
 > Please note: This is a simulacrum of auth with federated subscriptions - anyone providing the right user ID can access the conversation and its messages. Please refer to more robust examples to bulletproof the authentication in your applications.
 
 If a conversation already exists between the two provided IDs, an error will be thrown.
-
-```
-
-```
