@@ -11,6 +11,13 @@ type Query {
 type Mutation {
   # Initiate a new conversation with a particular user
   createConversation(recipientId: ID!): Conversation
+  # Submit a new message to a specified conversation
+  sendMessage(message: NewMessage!): Message
+}
+
+type Subscription {
+  # Start a new subscription for messages in a particular conversation
+  listenForMessageInConversation(id: ID!): Message
 }
 
 type Conversation {
