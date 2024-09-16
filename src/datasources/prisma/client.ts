@@ -1,13 +1,63 @@
 // A collection of Prisma-focused operations, extracted to keep our resolvers thin!
-
 import { PrismaClient, Prisma } from "@prisma/client";
-import { AuthenticationError, NotFoundError } from "../../utils/errors"
+import { AuthenticationError, RecordAlreadyExistsError, ConversationNotFoundError, RecordNotFoundError } from "./utils/errors"
 
 
 
 export class PrismaDbClient {
 
   prisma = new PrismaClient();
+
+  sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: number; text: string; userId: number;}) => {
+
+    try {
+      // see whether user is part of the conversation, then get other participant
+      const participants = await this.getConversationParticipants({ conversationId, userId })
+      console.log({participants})
+
+      if (!participants.length) {
+        throw ConversationNotFoundError()
+      }
+
+      const recipient = participants.find(p => p !== userId);
+      
+      // Create the message
+      const newMessage = await this.prisma.message.create({
+        data: {
+          text,
+          senderId: userId,
+          receiverId: recipient,
+          sentTime: new Date(),
+        }
+      })
+
+      // Add the message to the conversation
+       await this.prisma.conversation.update({
+        where: {
+          id: conversationId
+        },
+        data: {
+          messages: {
+            connect: {
+              id: newMessage.id
+            }
+          }
+        }
+      })
+
+      const returnMessage = {
+        ...newMessage,
+        sentFrom: newMessage.senderId,
+        sentTo: newMessage.receiverId
+      }
+
+      return returnMessage;
+      
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
 
   findUserConversationWithRecipient = async ({ recipientId, userId }: { recipientId: number, userId: number }) => {
     if (!userId) throw AuthenticationError();
@@ -40,7 +90,7 @@ export class PrismaDbClient {
   
 
       if (!matchedConversationArray.length) {
-        throw NotFoundError();
+        throw ConversationNotFoundError();
       }
 
       const [{ conversation: matchedConversation}] = matchedConversationArray;
@@ -121,7 +171,7 @@ export class PrismaDbClient {
 
         // User could not be found
         if (!user) {
-          throw NotFoundError()
+          throw RecordNotFoundError()
         }
 
         const { conversation: conversationsArray } = user;
@@ -134,7 +184,7 @@ export class PrismaDbClient {
     
 
         if (matchedConversation.length) {
-          throw Error("A conversation already exists between you and the recipient")
+          throw RecordAlreadyExistsError()
         }
 
 
@@ -180,5 +230,60 @@ export class PrismaDbClient {
         throw Error(e.message)
       }
   }
+
+  getConversationParticipants = async ({conversationId, userId}: {conversationId: number, userId: number}) => {
+    // First validate that the user is a member of the conversation
+    const userConversations = await this.prisma.conversationParticipant.findMany({
+      where: {
+        conversationId: {
+          in: [conversationId]
+        },
+        participantId: {
+          in: [userId]
+        }
+      },
+      include: {
+        conversation: {
+          select: {
+            participants: {
+              select: {
+                participantId: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!userConversations.length) {
+      throw ConversationNotFoundError()
+    }
+
+    // grab the other participant
+    const otherParticipant = await this.prisma.conversationParticipant.findMany({
+        where: {
+          conversationId: {
+            in: [conversationId]
+          },
+          participantId: {
+            notIn: [userId]
+          }
+        },
+        select: {
+          participant: {
+            select: {
+              id: true
+            }
+          }
+        }
+      })
+
+      const { participant: { id: participantId } } = otherParticipant[0]
+    
+      return [ userId, participantId ]
+
+  }
+
+  // todo: find conversation between two participants
 
 }

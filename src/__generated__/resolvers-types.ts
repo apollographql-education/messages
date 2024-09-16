@@ -44,6 +44,11 @@ export type MutationCreateConversationArgs = {
   recipientId: Scalars['ID']['input'];
 };
 
+export type NewMessageInput = {
+  conversationId: Scalars['String']['input'];
+  text: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   conversation?: Maybe<Conversation>;
@@ -148,6 +153,7 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Message: ResolverTypeWrapper<Message>;
   Mutation: ResolverTypeWrapper<{}>;
+  NewMessageInput: NewMessageInput;
   Query: ResolverTypeWrapper<{}>;
   User: ResolverTypeWrapper<User>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -160,6 +166,7 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID']['output'];
   Message: Message;
   Mutation: {};
+  NewMessageInput: NewMessageInput;
   Query: {};
   User: User;
   Boolean: Scalars['Boolean']['output'];
