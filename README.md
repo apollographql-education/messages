@@ -24,6 +24,7 @@ To run this repository, you'll need Node and a terminal. As part of the workshop
 ## Get started
 
 1. First, set up the project by installing dependencies with `npm install`.
+1. Set up the database following the instructions for Prisma below.
 1. Next, launch the project with `npm run dev`!
 
 As we proceed through the workshop, we'll install additional dependencies and walk through how to publish our schema changes to Studio.
