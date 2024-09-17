@@ -21,6 +21,7 @@ export const Subscription: Resolvers = {
                 
                 console.log("I am called the first time the subscription runs!")
                 // Initially, iterate through all the messages to "play back" what was missed
+                // We're not awaiting NEW messages, just yielding the messages we already have in DB
                 for (let i = 0; i < messages.length; i++) {
                   yield { listenForMessageInConversation: messages[i] }
                 }
