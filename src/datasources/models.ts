@@ -3,7 +3,9 @@ export type MessageRepresentation = {
   id: number;
   sentTime: Date;
   text: string;
-  senderId: number;
-  receiverId: number;
+  senderId?: number;
+  receiverId?: number;
+  sentFrom?: string;
+  sentTo?: string;
   conversationId?: number;
 }
