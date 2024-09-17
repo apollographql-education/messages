@@ -9,3 +9,14 @@ export type MessageRepresentation = {
   sentTo?: string;
   conversationId?: number;
 }
+
+export type NewMessageEvent = {
+  listenForMessageInConversation: {
+    id: number;
+    sentTime: Date;
+    text: string;
+    sentFrom: string;
+    sentTo: string;
+  },
+  conversationId: string;
+}

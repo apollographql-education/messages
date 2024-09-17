@@ -1,12 +1,12 @@
 import { withFilter } from 'graphql-subscriptions'
 import { Resolvers } from "../__generated__/resolvers-types";
+import { NewMessageEvent } from "../datasources/models"
 
 export const Subscription: Resolvers = {
   Subscription: {
     listenForMessageInConversation: {
       // @ts-ignore
-      subscribe: async (payload, { fromMessageReceivedAt, id }, { pubsub, dataSources }) => {
-        console.log("others", payload)
+      subscribe: async (_, { fromMessageReceivedAt, id }, { pubsub, dataSources }) => {
           // GOAL: If a cursor `fromMessageReceivedAt` is passed, fetch all messages sent after
           
           // Check whether a timestamp was passed
@@ -31,16 +31,15 @@ export const Subscription: Resolvers = {
                 console.log("creating a new iterator each time")
                 // The thing we want to do with every new message
                 let iterator = {
-                   [Symbol.asyncIterator]: () => pubsub.asyncIterator(["NEW_MESSAGE_SENT"])
+                   [Symbol.asyncIterator]: () => pubsub.asyncIterator<NewMessageEvent>(["NEW_MESSAGE_SENT"])
                   // [Symbol.asyncIterator]: filtered
                 }
 
                 // The loop that awaits new message events and yields them?
-                for await (const v of iterator) {
+                for await (const event of iterator) {
                   // is there a better way that we can filter here? withFilter has a hard time
-                  // @ts-ignore
-                  if (v.conversationId == id) {
-                    yield v;
+                  if (event.conversationId == id) {
+                    yield event;
                   }
                 }
               
