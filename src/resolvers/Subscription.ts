@@ -16,23 +16,31 @@ export const Subscription: Resolvers = {
             const messages = await dataSources.db.getMessagesAfterDate(timestampMs, id)
             
             return {
+              // Set up the generator
               async *[Symbol.asyncIterator]() {
+                
+                console.log("I am called the first time the subscription runs!")
+                // Initially, iterate through all the messages to "play back" what was missed
                 for (let i = 0; i < messages.length; i++) {
                   yield { listenForMessageInConversation: messages[i] }
                 }
 
+                console.log("creating a new iterator each time")
+                // The thing we want to do with every new message
                 let iterator = {
                   [Symbol.asyncIterator]: () => pubsub.asyncIterator(["NEW_MESSAGE_SENT"])
                 }
 
+                // The loop that awaits new message events and yields them?
                 for await (const v of iterator) {
+                  console.log("I get called every time there's a new message")
                   yield v;
                 }
               }
             }
           }
 
-
+        // If no timestamp is passed, handle new messages as we normally would
         return pubsub.asyncIterator(["NEW_MESSAGE_SENT"])
         }
     }
