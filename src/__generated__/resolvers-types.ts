@@ -75,6 +75,7 @@ export type Subscription = {
 
 
 export type SubscriptionListenForMessageInConversationArgs = {
+  fromMessageReceivedAt?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
 };
 

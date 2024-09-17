@@ -50,7 +50,6 @@ export class PrismaDbClient {
         sentTo: submittedMessage.receiverId
       }
 
-      console.log({returnMessage})
 
       return returnMessage;
       
@@ -60,8 +59,38 @@ export class PrismaDbClient {
     }
   }
 
+  getMessagesAfterDate = async (timestampMs: number, conversationId: string) => {
+    const date = new Date(timestampMs);
+
+    try {
+      const messages = await this.prisma.message.findMany({
+        where: {
+          conversationId: parseInt(conversationId),
+          sentTime: {
+            gte: date
+          }
+        }
+      })
+      
+      
+      return messages.map(({ senderId, receiverId, id, sentTime, text }) => {
+        return {
+          id,
+          sentTime,
+          text,
+          sentFrom: senderId,
+          sentTo: receiverId
+        }
+      })
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+
+  }
+
   getUserDetails = async (id: number) => {
-    console.log({id })
+
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -69,7 +98,6 @@ export class PrismaDbClient {
         }
       })
 
-      console.log({user})
 
       return user;
     } catch (e) {

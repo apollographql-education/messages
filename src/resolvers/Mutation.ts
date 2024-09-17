@@ -11,8 +11,11 @@ export const Mutation: Resolvers = {
       const [conversation, sender] = [conversationId, userId].map((id) => parseInt(id))
       const { id, text: messageText, sentFrom, sentTo, sentTime, ...messageAttributes } = await dataSources.db.sendMessageToConversation({ conversationId: conversation, text, userId: sender });
       const subscriptionMessage = { id, text: messageText, sentTo, sentFrom, sentTime }
-      console.log({subscriptionMessage})
+      
+      // Issue new message event for subscription, pass along conversation ID and only relevant attributes
       await pubsub.publish("NEW_MESSAGE_SENT", { listenForMessageInConversation: subscriptionMessage, conversationId })
+      
+      // Return all of the message that was created
       return { ...subscriptionMessage, ...messageAttributes };
     }
   }

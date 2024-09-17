@@ -16,8 +16,11 @@ type Mutation {
 }
 
 type Subscription {
-  # Start a new subscription for messages in a particular conversation
-  listenForMessageInConversation(id: ID!): Message
+  # Start a new subscription for messages in a particular conversation, with an optional timestamp cursor to replay from
+  listenForMessageInConversation(
+    id: ID!
+    fromMessageReceivedAt: String
+  ): Message
 }
 
 type Conversation {
