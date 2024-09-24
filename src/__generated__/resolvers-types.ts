@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { MessageRepresentation } from '../datasources/models';
+import { MessageRepresentation, UserRepresentation } from '../datasources/models';
 import { DataSourceContext } from '../types/DataSourceContext';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -157,7 +157,7 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   NewMessageInput: NewMessageInput;
   Query: ResolverTypeWrapper<{}>;
-  User: ResolverTypeWrapper<User>;
+  User: ResolverTypeWrapper<UserRepresentation>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
@@ -170,7 +170,7 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   NewMessageInput: NewMessageInput;
   Query: {};
-  User: User;
+  User: UserRepresentation;
   Boolean: Scalars['Boolean']['output'];
 }>;
 
