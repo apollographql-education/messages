@@ -1,7 +1,7 @@
 {
-  "name": "subgraph-template-typescript-apollo-server",
+  "name": "airlock-messages-subgraph",
   "private": true,
-  "description": "A template for TypeScript projects with pre-configured tooling",
+  "description": "The messages subgraph in the Airlock API",
   "version": "0.0.0",
   "license": "MIT",
   "repository": {
