@@ -52,4 +52,10 @@ input NewMessageInput {
 
 type User @key(fields: "id") {
   id: ID!
+  "The status indicating whether a user is online"
+  isOnline: Boolean! @requires(fields: "isLoggedIn lastActiveTime")
+  "The last recorded activity timestamp of the user"
+  lastActiveTime: String @external
+  "Whether or not a user is logged in"
+  isLoggedIn: Boolean! @external
 }
