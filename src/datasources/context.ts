@@ -1,5 +1,4 @@
 import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
-import { PrismaClient } from "@prisma/client";
 import { PrismaDbClient } from "./prisma/client"
 
 
