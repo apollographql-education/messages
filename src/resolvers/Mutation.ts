@@ -24,7 +24,15 @@ export const Mutation: Resolvers = {
         userId: sender,
       });
 
-      await pubsub.publish("NEW_MESSAGE_SENT", {});
+      await pubsub.publish("NEW_MESSAGE_SENT", {
+        listenForMessageInConversation: {
+          id,
+          text: messageText,
+          sentFrom,
+          sentTo,
+          sentTime,
+        }
+      });
     
       // Return all of the message that was created
       return {
