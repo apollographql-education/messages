@@ -10,6 +10,8 @@ export class PrismaDbClient {
 
   sendMessageToConversation = async ({ conversationId, text, userId }: { conversationId: number; text: string; userId: number;}) => {
 
+    if (!userId) throw AuthenticationError();
+    
     try {
       // see whether user is part of the conversation, then get other participant
       const participants = await this.getConversationParticipants({ conversationId, userId })
