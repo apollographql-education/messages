@@ -7,6 +7,7 @@ import {
 } from "@apollo/server/standalone";
 import resolvers from "./resolvers";
 import {createContext } from "./datasources/context"
+import { ApolloServerPluginSubscriptionCallback } from "@apollo/server/plugin/subscriptionCallback";
 
 const port = process.env.PORT ?? "4001";
 const subgraphName = require("../package.json").name;
@@ -14,12 +15,15 @@ const subgraphName = require("../package.json").name;
 
 async function main() {
   let typeDefs = gql(
-    readFileSync("schema.graphql", {
+    readFileSync("./src/schema.graphql", {
       encoding: "utf-8",
     })
   );
   const server = new ApolloServer({
     schema: buildSubgraphSchema({ typeDefs, resolvers }),
+    plugins: [
+      ApolloServerPluginSubscriptionCallback()
+    ]
   });
   const { url } = await startStandaloneServer(server, {
     context: (req) => createContext(req),

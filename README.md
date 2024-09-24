@@ -24,14 +24,14 @@ To run this repository, you'll need Node and a terminal. As part of the workshop
 ## Get started
 
 1. First, set up the project by installing dependencies with `npm install`.
-1. Set up the database following the instructions for Prisma below.
+1. As part of the `postinstall` script, the database will be automatically seeded.
 1. Next, launch the project with `npm run dev`!
 
 As we proceed through the workshop, we'll install additional dependencies and walk through how to publish our schema changes to Studio.
 
 ### Using Prisma
 
-This repository contains a database built with Prisma.
+This repository contains a database built with Prisma. It's set up to run the migration that seeds the database right after you run `npm install`. However, if you need to make updates subsequent to the initial install, follow these instructions.
 
 Run the following command to generate a migration that updates and seeds the database.
 

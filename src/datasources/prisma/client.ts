@@ -15,7 +15,6 @@ export class PrismaDbClient {
     try {
       // see whether user is part of the conversation, then get other participant
       const participants = await this.getConversationParticipants({ conversationId, userId })
-      console.log({participants})
 
       if (!participants.length) {
         throw ConversationNotFoundError()
@@ -24,7 +23,7 @@ export class PrismaDbClient {
       const recipient = participants.find(p => p !== userId);
       
       // Create the message
-      const newMessage = await this.prisma.message.create({
+      const submittedMessage = await this.prisma.message.create({
         data: {
           text,
           senderId: userId,
@@ -41,20 +40,68 @@ export class PrismaDbClient {
         data: {
           messages: {
             connect: {
-              id: newMessage.id
+              id: submittedMessage.id
             }
           }
         }
       })
 
       const returnMessage = {
-        ...newMessage,
-        sentFrom: newMessage.senderId,
-        sentTo: newMessage.receiverId
+        ...submittedMessage,
+        sentFrom: submittedMessage.senderId,
+        sentTo: submittedMessage.receiverId
       }
+
 
       return returnMessage;
       
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
+
+  getMessagesAfterDate = async (timestampMs: number, conversationId: string) => {
+    const date = new Date(timestampMs);
+
+    try {
+      const messages = await this.prisma.message.findMany({
+        where: {
+          conversationId: parseInt(conversationId),
+          sentTime: {
+            gte: date
+          }
+        }
+      })
+      
+      
+      return messages.map(({ senderId, receiverId, id, sentTime, text }) => {
+        return {
+          id,
+          sentTime,
+          text,
+          sentFrom: senderId,
+          sentTo: receiverId
+        }
+      })
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+
+  }
+
+  getUserDetails = async (id: number) => {
+
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: id
+        }
+      })
+
+
+      return user;
     } catch (e) {
       console.log(e)
       return e

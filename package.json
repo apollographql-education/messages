@@ -1,7 +1,7 @@
 {
-  "name": "subgraph-template-typescript-apollo-server",
+  "name": "airlock-messages-subgraph",
   "private": true,
-  "description": "A template for TypeScript projects with pre-configured tooling",
+  "description": "The messages subgraph in the Airlock API",
   "version": "0.0.0",
   "license": "MIT",
   "repository": {
@@ -24,7 +24,7 @@
   "scripts": {
     "build": "npm run codegen && tsc",
     "codegen": "graphql-codegen",
-    "postinstall": "npm run build",
+    "postinstall": "npm run build && npx prisma migrate dev",
     "start": "node dist/index.js",
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json,graphql\" --exec \"npm run build && npm run start\" --ignore ./src/__generated__/ --ignore ./src/datasources/BarAPI.ts",
     "test": "jest",

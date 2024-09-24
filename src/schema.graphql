@@ -1,5 +1,8 @@
 extend schema
-  @link(url: "https://specs.apollo.dev/federation/v2.8", import: ["@key"])
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.7"
+    import: ["@key", "@requires", "@external"]
+  )
 
 type Query {
   # Retrieve all conversations for the logged-in user
@@ -8,9 +11,16 @@ type Query {
   conversation(recipientId: ID!): Conversation
 }
 
+type Subscription {
+  # Start a new subscription for messages in a particular conversation, with an optional timestamp cursor to replay from
+  listenForMessageInConversation(id: ID!): Message
+}
+
 type Mutation {
   # Initiate a new conversation with a particular user
   createConversation(recipientId: ID!): Conversation
+  # Submit a new message to a specified conversation
+  sendMessage(message: NewMessageInput!): Message
 }
 
 type Conversation {
@@ -25,9 +35,9 @@ type Message {
   id: ID!
   # The text content of the message
   text: String!
-  # The ID of the user that sent the message
+  # The user that sent the message
   sentFrom: User!
-  # The ID of the user the message was sent to
+  # The user the message was sent to
   sentTo: User!
   # The timestamp of when the message was sent
   sentTime: String
