@@ -28,9 +28,9 @@ type Message {
   id: ID!
   # The text content of the message
   text: String!
-  # The ID of the user that sent the message
+  # The user that sent the message
   sentFrom: User!
-  # The ID of the user the message was sent to
+  # The user the message was sent to
   sentTo: User!
   # The timestamp of when the message was sent
   sentTime: String
