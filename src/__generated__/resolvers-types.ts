@@ -81,6 +81,12 @@ export type SubscriptionListenForMessageInConversationArgs = {
 export type User = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
+  /** Whether or not a user is logged in */
+  isLoggedIn: Scalars['Boolean']['output'];
+  /** The status indicating whether a user is online */
+  isOnline: Scalars['Boolean']['output'];
+  /** The last recorded activity timestamp of the user */
+  lastActiveTime?: Maybe<Scalars['String']['output']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -224,7 +230,10 @@ export type SubscriptionResolvers<ContextType = DataSourceContext, ParentType ex
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']>, { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
+
+  isOnline?: Resolver<ResolversTypes['Boolean'], { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}> & GraphQLRecursivePick<ParentType, {"isLoggedIn":true,"lastActiveTime":true}>, ContextType>;
+
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
