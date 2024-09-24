@@ -20,3 +20,9 @@ export type NewMessageEvent = {
   },
   conversationId: string;
 }
+
+export type UserRepresentation = {
+  id: string;
+  lastActiveTime?: number;
+  isLoggedIn?: boolean;
+}

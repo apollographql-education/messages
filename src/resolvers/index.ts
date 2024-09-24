@@ -3,6 +3,8 @@ import { Mutation } from "./Mutation";
 import { Message } from "./Message";
 import { Conversation } from "./Conversation";
 import { Subscription } from "./Subscription";
+import { User } from "./User";
+
 
 
 const resolvers = {
@@ -10,7 +12,8 @@ const resolvers = {
   ...Mutation,
   ...Subscription,
   ...Conversation,
-  ...Message
+  ...Message,
+  ...User,
 };
 
 export default resolvers;

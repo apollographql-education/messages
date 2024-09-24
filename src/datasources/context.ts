@@ -9,7 +9,7 @@ export const createContext = async ({ req }: StandaloneServerContextFunctionArgu
   const userId = token.split(" ")[1];
   return {
     userId,
-    pubsub: pubsub,
+    pubsub,
     dataSources: {
       db: new PrismaDbClient()
     }

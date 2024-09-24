@@ -49,7 +49,14 @@ export const Subscription: Resolvers = {
         // If no timestamp is passed, handle new messages as we normally would
         }
           return pubsub.asyncIterator(["NEW_MESSAGE_SENT"])
-      }
+      },
+      // subscribe: withFilter(
+      //   (_, __, { pubsub }) => {
+      //   return pubsub.asyncIterator(["NEW_MESSAGE_SENT"])
+      //   }, (payload, variables) => {
+      //     return payload.conversationId === variables.id
+      // })
+
     }
   }
 }

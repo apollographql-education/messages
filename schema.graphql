@@ -1,5 +1,8 @@
 extend schema
-  @link(url: "https://specs.apollo.dev/federation/v2.8", import: ["@key"])
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.8"
+    import: ["@key", "@requires", "@external", "@interfaceObject"]
+  )
 
 type Query {
   # Retrieve all conversations for the logged-in user
@@ -52,4 +55,10 @@ input NewMessageInput {
 
 type User @key(fields: "id") {
   id: ID!
+  "The status indicating whether a user is online"
+  isOnline: Boolean! @requires(fields: "lastActiveTime isLoggedIn")
+  "The last recorded activity timestamp of the user"
+  lastActiveTime: String @external
+  "Whether or not a user is logged in"
+  isLoggedIn: Boolean! @external
 }

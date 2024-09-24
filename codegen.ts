@@ -9,7 +9,8 @@ const config: CodegenConfig = {
         useIndexSignature: true,
         contextType: '../types/DataSourceContext#DataSourceContext',
         mappers: {
-          Message: "../datasources/models#MessageRepresentation"
+          Message: "../datasources/models#MessageRepresentation",
+          User: "../datasources/models#UserRepresentation",
         }
       },
       plugins: ["typescript","typescript-resolvers"]

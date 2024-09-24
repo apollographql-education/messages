@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { MessageRepresentation } from '../datasources/models';
+import { MessageRepresentation, UserRepresentation } from '../datasources/models';
 import { DataSourceContext } from '../types/DataSourceContext';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -82,6 +82,12 @@ export type SubscriptionListenForMessageInConversationArgs = {
 export type User = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
+  /** Whether or not a user is logged in */
+  isLoggedIn: Scalars['Boolean']['output'];
+  /** The status indicating whether a user is online */
+  isOnline: Scalars['Boolean']['output'];
+  /** The last recorded activity timestamp of the user */
+  lastActiveTime?: Maybe<Scalars['String']['output']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -175,7 +181,7 @@ export type ResolversTypes = ResolversObject<{
   NewMessageInput: NewMessageInput;
   Query: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
-  User: ResolverTypeWrapper<User>;
+  User: ResolverTypeWrapper<UserRepresentation>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
@@ -189,7 +195,7 @@ export type ResolversParentTypes = ResolversObject<{
   NewMessageInput: NewMessageInput;
   Query: {};
   Subscription: {};
-  User: User;
+  User: UserRepresentation;
   Boolean: Scalars['Boolean']['output'];
 }>;
 
@@ -225,7 +231,10 @@ export type SubscriptionResolvers<ContextType = DataSourceContext, ParentType ex
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']>, { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
+
+  isOnline?: Resolver<ResolversTypes['Boolean'], { __typename: 'User' } & GraphQLRecursivePick<ParentType, {"id":true}> & GraphQLRecursivePick<ParentType, {"lastActiveTime":true,"isLoggedIn":true}>, ContextType>;
+
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
