@@ -15,7 +15,7 @@ const subgraphName = require("../package.json").name;
 
 async function main() {
   let typeDefs = gql(
-    readFileSync("schema.graphql", {
+    readFileSync("./src/schema.graphql", {
       encoding: "utf-8",
     })
   );
