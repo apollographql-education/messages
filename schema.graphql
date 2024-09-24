@@ -39,7 +39,3 @@ input NewMessageInput {
   # The ID of the conversation
   conversationId: String!
 }
-
-type User @key(fields: "id") {
-  id: ID!
-}
