@@ -7,3 +7,20 @@ export type MessageRepresentation = {
   receiverId: number;
   conversationId?: number;
 }
+
+export type NewMessageEvent = {
+  listenForMessageInConversation: {
+    id: number;
+    sentTime: Date;
+    text: string;
+    sentFrom: string;
+    sentTo: string;
+  },
+  conversationId: string;
+}
+
+export type UserRepresentation = {
+  id: string;
+  lastActiveTime?: number;
+  isLoggedIn?: boolean;
+}
